@@ -1,0 +1,70 @@
+version: 2.0
+
+jobs:
+
+  autofix-biweekly:
+    docker:
+      - image: gitpod/workspace-full
+    steps:
+      - run:
+          command: |
+            git config --global user.name "$GIT_USER_NAME"
+            git config --global user.email "$GIT_USER_EMAIL"
+            git config --global hub.protocol "https"
+            mkdir -p ~/.config
+            printf "github.com:\n- user: $GITHUB_LOGIN\n  oauth_token: $GITHUB_TOKEN\n  protocol: https\n" > ~/.config/hub
+            printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
+            brew install hub
+            pip install codespell
+            npm install -g autofix
+      - run:
+          command:
+            git clone --recurse-submodules https://github.com/code-server-boilerplates/starter-pack cdrs-starter-pack
+            cd cdrs-starter-pack
+            hub fork
+            autofix --branches --branch-suffix=$CIRCLE_BUILD_NUM --push=$GITHUB_LOGIN --pull-request --signoff
+            cd ..
+          no_output_timeout: 120m
+
+  autofix-monthly:
+    docker:
+      - image: gitpod/workspace-full
+    steps:
+      - run:
+          command: |
+            git config --global user.name "$GIT_USER_NAME"
+            git config --global user.email "$GIT_USER_EMAIL"
+            git config --global hub.protocol "https"
+            mkdir -p ~/.config
+            printf "github.com:\n- user: $GITHUB_LOGIN\n  oauth_token: $GITHUB_TOKEN\n  protocol: https\n" > ~/.config/hub
+            printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
+            brew install hub
+            pip install codespell
+            npm install -g autofix
+      - run:
+          command: |
+            echo "Nothing to see here"
+          no_output_timeout: 120m
+
+workflows:
+  version: 2
+  biweekly:
+    triggers:
+      - schedule:
+          cron: "30 15 * * 0,3"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - autofix-biweekly
+  monthly:
+    triggers:
+      - schedule:
+          cron: "30 15 9 * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - autofix-monthly
