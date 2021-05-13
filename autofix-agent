@@ -4,22 +4,31 @@ HUB_FORK_FAILED="[autofix-ci] Failed to fork the repo, make sure you configured 
 AUTOFIX_ERROR="[autofix-ci] There's an problem autofixing issues, please see the error log above for details."
 
 main() {
+  if [[ $@ = "" ]]; then
+     echo "Usage: $0 owner/repo custom-dir-name"
+     exit
+  fi
+
   echo "[autofix-ci] Running $CRON_TYPE fixes for cdrs-template-registry..."
   git clone --recurse-submodules https://github.com/$1.git $2
-  if [[ $? != "0" ]]; then echo "Repo cloning failed!" && exit $? fi
+  if [[ $? != "0" ]]; then 
+     echo "[autofix-ci] Repo cloning failed!" && exit $?
+  fi
   cd $2
 
   hub fork
-  if [[ $? != "0" ]]; then echo $HUB_FORK_FAILED && exit $? fi
+  if [[ $? != "0" ]]; then
+     echo $HUB_FORK_FAILED && exit $?
+  fi
   
   autofix --branches --branch-suffix=$CIRCLE_BUILD_NUM --push=$GITHUB_LOGIN --pull-request --signoff
   if [[ $? != "0" ]]; then
      echo $AUTOFIX_ERROR && exit $?
   else
+     cd ..
      echo "[autofix-ci] Successfully fixed issues for $2!"
      exit 0
   fi
-  cd ..
 }
 
 echo "[debugger] Input received: $@"
