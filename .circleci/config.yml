@@ -23,9 +23,10 @@ jobs:
           environment:
              CRON_TYPE: monthly
           command: |
-            ./run-autofix-agent code-server-boilerplates/starter-pack cdrs-starter-pack
-            ./run-autofix-agent ThePinsTeam/deploy-code-server thepinsteam-internal
-            echo "Success!"
+            echo "[autofix-ci] You're on $PWD"
+            ./autofix-agent code-server-boilerplates/starter-pack cdrs-starter-pack
+            ./autofix-agent ThePinsTeam/deploy-code-server thepinsteam-internal
+            echo "[autofix-ci] Success!"
           no_output_timeout: 120m
 
   autofix-monthly:
