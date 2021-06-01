@@ -18,14 +18,16 @@ jobs:
             brew install hub
             pip install codespell
             npm install -g autofix
+            wget https://raw.githubusercontent.com/code-server-boilerplates/autofix-cronjobs/main/autofix-agent -O /home/gitpod/project/run-autofix
+            chmod +x /home/gitpod/project/run-autofix
       - run:
           name: Run bi-weekly fixes
           environment:
              CRON_TYPE: monthly
           command: |
             echo "[autofix-ci] You're on $PWD"
-            ./autofix-agent code-server-boilerplates/starter-pack cdrs-starter-pack
-            ./autofix-agent ThePinsTeam/deploy-code-server thepinsteam-internal
+            /home/gitpod/project/run-autofix code-server-boilerplates/starter-pack cdrs-starter-pack
+            /home/gitpod/project/run-autofix ThePinsTeam/deploy-code-server thepinsteam-internal
             echo "[autofix-ci] Success!"
           no_output_timeout: 120m
 
@@ -45,12 +47,14 @@ jobs:
             brew install hub
             pip install codespell
             npm install -g autofix
+            wget https://raw.githubusercontent.com/code-server-boilerplates/autofix-cronjobs/main/autofix-agent -O /home/gitpod/project/run-autofix
+            chmod +x /home/gitpod/project/run-autofix
       - run:
           name: Run monthly fixes
           environment:
              CRON_TYPE: monthly
           command: |
-            ./run-autofix-agent code-server-boilerplates/template-regostry registry
+            ./run-autofix code-server-boilerplates/template-registry registry
             echo "Success!"
           no_output_timeout: 120m
 
