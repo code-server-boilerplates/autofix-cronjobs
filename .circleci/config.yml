@@ -25,8 +25,11 @@ jobs:
           environment:
              CRON_TYPE: monthly
           command: |
+            set -e
             echo "[autofix-ci] You're on $PWD"
-            /home/gitpod/project/run-autofix code-server-boilerplates/starter-pack cdrs-starter-pack
+            /home/gitpod/project/run-autofix code-server-boilerplates/starter-pack csb-starter-pack
+            /home/gitpod/project/run-autofix code-server-boilerplates/starter-pack-as-base-image csb-kubernetes-starter
+            /home/gitpod/project/run-autofix code-server-boilerplates/nodejs-starter csb-nodejs-starter
             /home/gitpod/project/run-autofix ThePinsTeam/deploy-code-server thepinsteam-internal
             echo "[autofix-ci] Success!"
           no_output_timeout: 120m
@@ -54,8 +57,9 @@ jobs:
           environment:
              CRON_TYPE: monthly
           command: |
+            echo "[autofix-ci] You're on $PWD"
             ./run-autofix code-server-boilerplates/template-registry registry
-            echo "Success!"
+            echo "[autofix-ci] Success!"
           no_output_timeout: 120m
 
 workflows:
