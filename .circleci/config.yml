@@ -1,10 +1,9 @@
 version: 2.0
 
 jobs:
-
-  autofix-biweekly:
+  autofix-weekly:
     docker:
-      - image: gitpod/workspace-full
+      - image: gitpod/workspace-full # TODO: Use our own image in the future.
     steps:
       - run:
           name: Setup CI and install dependencies
@@ -33,7 +32,6 @@ jobs:
             /home/gitpod/project/run-autofix ThePinsTeam/deploy-code-server thepinsteam-internal
             echo "[autofix-ci] Success!"
           no_output_timeout: 120m
-
   autofix-monthly:
     docker:
       - image: gitpod/workspace-full
@@ -64,16 +62,16 @@ jobs:
 
 workflows:
   version: 2
-  biweekly:
+  weekly:
     triggers:
       - schedule:
-          cron: "30 12 * * 0,3"
+          cron: "30 12 * * 6"
           filters:
             branches:
               only:
                 - main
     jobs:
-      - autofix-biweekly
+      - autofix-weekly
   monthly:
     triggers:
       - schedule:
