@@ -1,6 +1,8 @@
-# autofix-cronjobs
+# Autofix CircleCI Cronjobs
 
-CircleCI-powered repo for Autofix, using [Gitpod's workspace-full][gitpod/workspace-full] Docker image.
+CircleCI-powered repo for Autofix, using [Gitpod's official `workspace-full` Docker image][gitpod/workspace-full]. Pull requests are sent as
+The Pins Team's service/bot account, [@RecapTimeBot](https://github.com/RecapTimeBot) which has the commit sign-off as the PR description
+(which we'll fix it in the future).
 
 [gitpod/workspace-full]: https://github.com/gitpod-io/workspace-images/tree/main/full
 
@@ -18,7 +20,7 @@ For `code-server` deployment template repos that registered in [out template reg
 required fields and press **Create new issue**.
 * Expect 1-2 days of turnout between requests. This may take longer if number of issues gets larger.
 * You'll be notified by our bots when we accept your request.
-* Check your PRs bi-weekly (or monthly if you chose, on 9th day) at 12:30 (UTC time) for an PR from our bot, [@RecapTimeBot](https://github.com/RecapTimeBot).
+* Check your PRs weekly (or monthly if you chose, on 9th day) at 12:30 UTC time for an PR from our bot, [@RecapTimeBot](https://github.com/RecapTimeBot).
 
 > Not yet registered? [Register your template today](https://rtapp.tk/csb-deploy-activate) to the index.
 
